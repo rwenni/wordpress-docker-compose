@@ -3,6 +3,7 @@ version: '3'
 services:
   wp:
     image: wordpress:latest # https://hub.docker.com/_/wordpress/
+    platform: linux/amd64
     ports:
       - ${IP}:80:80 # change ip if required
     volumes:
@@ -22,6 +23,7 @@ services:
 
   wpcli:
     image: wordpress:cli
+    platform: linux/amd64
     volumes:
       - ./config/php.conf.ini:/usr/local/etc/php/conf.d/conf.ini
       - ./wp-app:/var/www/html
@@ -36,6 +38,7 @@ services:
 
   pma:
     image: phpmyadmin/phpmyadmin
+    platform: linux/amd64
     environment:
       # https://docs.phpmyadmin.net/en/latest/setup.html#docker-environment-variables
       PMA_HOST: db
@@ -48,6 +51,7 @@ services:
 
   db:
     image: mysql:latest # https://hub.docker.com/_/mysql/ - or mariadb https://hub.docker.com/_/mariadb
+    platform: linux/amd64
     ports:
       - ${IP}:3306:3306 # change ip if required
     command: [
