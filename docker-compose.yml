@@ -2,12 +2,15 @@ version: '3'
 
 services:
   wp:
-    image: wordpress:latest # https://hub.docker.com/_/wordpress/
+    image: wordpress:php8.1 # https://hub.docker.com/_/wordpress/
+    platform: linux/amd64
     ports:
       - ${IP}:80:80 # change ip if required
     volumes:
       - ./config/php.conf.ini:/usr/local/etc/php/conf.d/conf.ini
+      #- './config/php.ini:/usr/local/etc/php/conf.d/overrides.ini' # php.ini
       - ./wp-app:/var/www/html # Full wordpress project
+      - ./xdebug:/var/xdebug # Xdebug logs
       #- ./plugin-name/trunk/:/var/www/html/wp-content/plugins/plugin-name # Plugin development
       #- ./theme-name/trunk/:/var/www/html/wp-content/themes/theme-name # Theme development
     environment:
@@ -15,27 +18,19 @@ services:
       WORDPRESS_DB_NAME: "${DB_NAME}"
       WORDPRESS_DB_USER: root
       WORDPRESS_DB_PASSWORD: "${DB_ROOT_PASSWORD}"
+      WORDPRESS_DEBUG: 1
+      WORDPRESS_CONFIG_EXTRA: |
+          define( 'DISABLE_WP_CRON', true );
+          define( 'WP_DEBUG_LOG', '/var/xdebug/wp-errors.log' );
+          define( 'FS_DIRECT', true );
     depends_on:
       - db
     links:
       - db
 
-  wpcli:
-    image: wordpress:cli
-    volumes:
-      - ./config/php.conf.ini:/usr/local/etc/php/conf.d/conf.ini
-      - ./wp-app:/var/www/html
-    environment:
-      WORDPRESS_DB_HOST: db
-      WORDPRESS_DB_NAME: "${DB_NAME}"
-      WORDPRESS_DB_USER: root
-      WORDPRESS_DB_PASSWORD: "${DB_ROOT_PASSWORD}"
-    depends_on:
-      - db
-      - wp
-
   pma:
     image: phpmyadmin/phpmyadmin
+    platform: linux/amd64
     environment:
       # https://docs.phpmyadmin.net/en/latest/setup.html#docker-environment-variables
       PMA_HOST: db
@@ -48,6 +43,7 @@ services:
 
   db:
     image: mysql:latest # https://hub.docker.com/_/mysql/ - or mariadb https://hub.docker.com/_/mariadb
+    platform: linux/amd64
     ports:
       - ${IP}:3306:3306 # change ip if required
     command: [
