@@ -8,7 +8,9 @@ services:
       - ${IP}:80:80 # change ip if required
     volumes:
       - ./config/php.conf.ini:/usr/local/etc/php/conf.d/conf.ini
+      #- './config/php.ini:/usr/local/etc/php/conf.d/overrides.ini' # php.ini
       - ./wp-app:/var/www/html # Full wordpress project
+      - ./xdebug:/var/xdebug # Xdebug logs
       #- ./plugin-name/trunk/:/var/www/html/wp-content/plugins/plugin-name # Plugin development
       #- ./theme-name/trunk/:/var/www/html/wp-content/themes/theme-name # Theme development
     environment:
@@ -16,6 +18,11 @@ services:
       WORDPRESS_DB_NAME: "${DB_NAME}"
       WORDPRESS_DB_USER: root
       WORDPRESS_DB_PASSWORD: "${DB_ROOT_PASSWORD}"
+      WORDPRESS_DEBUG: 1
+      WORDPRESS_CONFIG_EXTRA: |
+          define( 'DISABLE_WP_CRON', true );
+          define( 'WP_DEBUG_LOG', '/var/xdebug/wp-errors.log' );
+          define( 'FS_DIRECT', true );
     depends_on:
       - db
     links:
