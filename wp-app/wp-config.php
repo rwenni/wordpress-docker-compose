@@ -131,3 +131,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 /** Sets up WordPress vars and included files. */
 require_once ABSPATH . 'wp-settings.php';
+
+/** Set your host entry.  */
+define('WP_HOME','http://wp-app.local');
+define('WP_SITEURL','http://wp-app.local');
