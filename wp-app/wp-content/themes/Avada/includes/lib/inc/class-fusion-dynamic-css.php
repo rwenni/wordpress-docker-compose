@@ -153,7 +153,7 @@ class Fusion_Dynamic_CSS {
 	protected function __construct() {
 		self::$helpers = $this->get_helpers();
 
-		add_action( 'wp_enqueue_scripts', [ $this, 'init' ], 100 );
+		add_action( 'wp_enqueue_scripts', [ $this, 'init' ], 110 );
 
 		// When a post is saved, reset its caches to force-regenerate the CSS.
 		add_action( 'save_post', [ $this, 'reset_post_transient' ] );

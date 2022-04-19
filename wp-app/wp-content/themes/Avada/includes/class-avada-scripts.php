@@ -1064,7 +1064,7 @@ class Avada_Scripts {
 	 * @return bool
 	 */
 	protected function is_bundled_plugin_style( $src ) {
-		$bundled_plugins = [ '/the-events-calendar/', '/events-calendar-pro/', '/woocommerce/', '/bbpress/', '/revslider/', '/contact-form-7/', '/convertplug/' ];
+		$bundled_plugins = [ '/the-events-calendar/', '/events-calendar-pro/', '/the-events-calendar-filterbar/', '/event-tickets/', '/event-tickets-plus/', '/woocommerce/', '/bbpress/', '/revslider/', '/contact-form-7/', '/convertplug/' ];
 
 		// Check if src containes bundled plugin dir name.
 		if ( str_replace( $bundled_plugins, '', $src ) === $src ) {
